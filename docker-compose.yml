@@ -1,0 +1,73 @@
+version : "3"
+services:
+    eureka-registry-service:
+        image: registryimage1
+        build: eureka-registry-service/
+        restart: always
+        network_mode: host
+        container_name: registrycontainer
+        ports:
+          - "8085:8761"
+        expose:
+          - 8085
+
+    spring-config-server:
+        image: configimage1
+        build: spring-config-server/
+        restart: always
+        network_mode: host
+        container_name: configcontainer
+        depends_on:
+          - eureka-registry-service
+        ports:
+          - "8082:8888"
+        expose:
+          - 8082
+
+    muzixapplication:
+        image: muziximage1
+        build: muzixapplication/
+        restart: always
+        network_mode: host
+        container_name: muzixcontainer2
+        depends_on:
+          - mongo
+          - spring-config-server
+          - eureka-registry-service
+        ports:
+          - "8083:8081"
+        expose:
+          - 8083
+
+    userProfile:
+      image: userimage1
+      build: userProfile/
+      restart: always
+      network_mode: host
+      container_name: usercontainer
+      depends_on:
+        - mongo
+        - spring-config-server
+        - eureka-registry-service
+      ports:
+        - "8084:8080"
+      expose:
+        - 8084
+
+    api-gateway-service:
+      image: gatewayimage1
+      build: api-gateway-service/
+      restart: always
+      network_mode: host
+      container_name: gatewaycontainer
+      ports:
+        - "8086:8087"
+      expose:
+        - 8086
+
+    mongo:
+        image: mongo
+        ports:
+          - "27017:27017"
+        container_name: test-mongo2
+        network_mode: host
