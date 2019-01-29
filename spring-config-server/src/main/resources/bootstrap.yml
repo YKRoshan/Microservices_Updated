@@ -6,10 +6,10 @@ spring:
       server:
         git:
           uri: https://github.com/Gauravgkp/MicroProperties
-#          repos:
-#            search-paths:
-#              - 'TrackService*'
-#              - 'UserProfile*'
+          repos:
+            search-paths:
+              - 'TrackService*'
+              - 'UserProfile*'
 
 server:
   port: 8888
